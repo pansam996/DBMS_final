@@ -129,7 +129,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>90</x>
        <y>10</y>
-       <width>81</width>
+       <width>681</width>
        <height>16</height>
       </rect>
      </property>
@@ -172,7 +172,7 @@ p, li { white-space: pre-wrap; }
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -184,16 +184,6 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>一般功能</string>
       </attribute>
-      <widget class="QSpinBox" name="spinBox">
-       <property name="geometry">
-        <rect>
-         <x>140</x>
-         <y>10</y>
-         <width>48</width>
-         <height>24</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QPushButton" name="pushButton_5">
        <property name="geometry">
         <rect>
@@ -218,19 +208,6 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="text">
         <string>客人電話</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEdit">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>60</y>
-         <width>113</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
       <widget class="QPushButton" name="pushButton_3">
@@ -285,19 +262,6 @@ p, li { white-space: pre-wrap; }
         <string>客人電話</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_3">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>160</y>
-         <width>113</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_10">
        <property name="geometry">
         <rect>
@@ -309,16 +273,6 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="text">
         <string>設計師編號</string>
-       </property>
-      </widget>
-      <widget class="QSpinBox" name="spinBox_3">
-       <property name="geometry">
-        <rect>
-         <x>140</x>
-         <y>100</y>
-         <width>48</width>
-         <height>24</height>
-        </rect>
        </property>
       </widget>
       <widget class="QLabel" name="label_11">
@@ -363,9 +317,9 @@ p, li { white-space: pre-wrap; }
       <widget class="QComboBox" name="comboBox">
        <property name="geometry">
         <rect>
-         <x>73</x>
+         <x>80</x>
          <y>130</y>
-         <width>111</width>
+         <width>121</width>
          <height>26</height>
         </rect>
        </property>
@@ -394,6 +348,46 @@ p, li { white-space: pre-wrap; }
          <string>染髮</string>
         </property>
        </item>
+      </widget>
+      <widget class="QComboBox" name="comboBox_2">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>10</y>
+         <width>121</width>
+         <height>26</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboBox_4">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>60</y>
+         <width>121</width>
+         <height>26</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboBox_5">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>100</y>
+         <width>121</width>
+         <height>26</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboBox_6">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>160</y>
+         <width>121</width>
+         <height>26</height>
+        </rect>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="tab">
@@ -426,23 +420,13 @@ p, li { white-space: pre-wrap; }
         <string>預約編號</string>
        </property>
       </widget>
-      <widget class="QSpinBox" name="spinBox_2">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>60</y>
-         <width>48</width>
-         <height>24</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QPushButton" name="pushButton_6">
        <property name="geometry">
         <rect>
          <x>230</x>
          <y>50</y>
          <width>111</width>
-         <height>41</height>
+         <height>51</height>
         </rect>
        </property>
        <property name="text">
@@ -501,22 +485,12 @@ p, li { white-space: pre-wrap; }
         <string>預約編號</string>
        </property>
       </widget>
-      <widget class="QSpinBox" name="spinBox_4">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>130</y>
-         <width>48</width>
-         <height>24</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QComboBox" name="comboBox_3">
        <property name="geometry">
         <rect>
-         <x>93</x>
+         <x>90</x>
          <y>170</y>
-         <width>111</width>
+         <width>121</width>
          <height>26</height>
         </rect>
        </property>
@@ -563,13 +537,33 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>230</x>
-         <y>140</y>
+         <y>130</y>
          <width>111</width>
-         <height>41</height>
+         <height>61</height>
         </rect>
        </property>
        <property name="text">
         <string>更新</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboBox_7">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>60</y>
+         <width>121</width>
+         <height>26</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboBox_8">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>130</y>
+         <width>121</width>
+         <height>26</height>
+        </rect>
        </property>
       </widget>
      </widget>
