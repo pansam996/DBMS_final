@@ -68,15 +68,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         _translate = QtCore.QCoreApplication.translate
         self.label_22.setText(_translate("MainWindow", ''))
         self.textEdit.clear()
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
 
     def sql_enter(self):
         _translate = QtCore.QCoreApplication.translate
 
-        table_dic = {'designer': ['設計師編號', '設計師姓名', '設計師電話', '就職門市地址'],
-                     'customer': ['電話', '姓名', '生日'],
-                     'office': ['門市地址', '門市電話', '門市坪數', '管理人編號'],
-                     'item': ['耗材編號', '耗材名稱', '耗材數量', '管理人編號'],
-                     'order_salon': ['預約編號', '美髮項目', '美髮價錢', '預約者電話', '設計師編號']}
+        table_dic = {'designer': {'designer_no': '設計師編號', 'name': '設計師姓名',
+                                  'phone': '設計師電話', 'office_address': '就職門市地址'},
+                     'customer': {'phone': '電話', 'name': '姓名', 'birthday': '生日'},
+                     'office': {'office_address': '門市地址', 'phone': '門市電話',
+                                'size': '門市坪數', 'manager_no': '管理人編號'},
+                     'item': {'item_no': '耗材編號', 'item_name': '耗材名稱',
+                              'item_num': '耗材數量', 'manager_no': '管理人編號'},
+                     'order_salon': {'salon_no': '預約編號', 'salon_content': '美髮項目',
+                                     'salon_price': '美髮價錢', 'customer_phone': '預約者電話', 'designer_no': '設計師編號'}}
         action_dic = {'select': '查詢成功',
                       'insert': '新增成功',
                       'delete': '刪除成功',
@@ -134,40 +140,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         sql = 'select * from ' + table
                         cursor.execute(sql)
                         result = cursor.fetchall()
-                        if result:
-                            column_count = len(result[0])
-                            self.tableWidget.setColumnCount(column_count)
-                        # set column value
                         try:
                             column_count = len(table_dic[table])
-                            column_value = table_dic[table]
+                            self.tableWidget.setColumnCount(column_count)
+                            # set column value
+                            column_value = []
+                            for k, v in table_dic[table].items():
+                                column_value.append(v)
+                            print(column_value)
                             for i in range(column_count):
                                 item = QtWidgets.QTableWidgetItem()
                                 self.tableWidget.setHorizontalHeaderItem(i, item)
                                 item.setText(_translate("MainWindow", column_value[i]))
                         except KeyError:
-                            pass
+                            if result:
+                                column_count = len(result[0])
+                            self.tableWidget.setColumnCount(column_count)
                     else:
                         if sql_item[1] == '*':
                             result = cursor.fetchall()
-                            if result:
-                                column_count = len(result[0])
-                                self.tableWidget.setColumnCount(column_count)
-                            # set column value
                             try:
                                 column_count = len(table_dic[table])
-                                column_value = table_dic[table]
+                                self.tableWidget.setColumnCount(column_count)
+                                # set column value
+                                column_value = []
+                                for k, v in table_dic[table].items():
+                                    column_value.append(v)
                                 for i in range(column_count):
                                     item = QtWidgets.QTableWidgetItem()
                                     self.tableWidget.setHorizontalHeaderItem(i, item)
                                     item.setText(_translate("MainWindow", column_value[i]))
                             except KeyError:
-                                pass
+                                if result:
+                                    column_count = len(result[0])
+                                self.tableWidget.setColumnCount(column_count)
                         else:
                             result = cursor.fetchall()
-                            if result:
-                                column_count = len(result[0])
-                                self.tableWidget.setColumnCount(column_count)
                             # set column value
                             '''
                             select x from
@@ -175,17 +183,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             '''
                             column_value = sql_item[1]
                             column_value = column_value.split(',')
-
-                            for i in range(column_count):
-                                item = QtWidgets.QTableWidgetItem()
-                                self.tableWidget.setHorizontalHeaderItem(i, item)
-                                item.setText(_translate("MainWindow", column_value[i]))
-
-                    # print data for different table
-                    # if create new table that isn't in table_dic
+                            column_count = len(column_value)
+                            self.tableWidget.setColumnCount(column_count)
+                            try:
+                                column_dic = table_dic[table]
+                                for i in range(column_count):
+                                    item = QtWidgets.QTableWidgetItem()
+                                    self.tableWidget.setHorizontalHeaderItem(i, item)
+                                    item.setText(_translate("MainWindow", column_dic[column_value[i]]))
+                            except KeyError:
+                                for i in range(column_count):
+                                    item = QtWidgets.QTableWidgetItem()
+                                    self.tableWidget.setHorizontalHeaderItem(i, item)
+                                    item.setText(_translate("MainWindow", column_value[i]))
 
                     row_count = len(result)
-                    self.tableWidget.setColumnCount(column_count)
                     self.tableWidget.setRowCount(row_count)
 
                     # set row value
