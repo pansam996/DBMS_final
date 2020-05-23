@@ -38,6 +38,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_12.clicked.connect(self.each_office_manager)
         self.pushButton_9.clicked.connect(self.inventory_shortage_item)
 
+    def show_database_status(self, result, column_count, row_count, column_value, notify_text):
+        _translate = QtCore.QCoreApplication.translate
+
+        self.tableWidget.setColumnCount(column_count)
+        self.tableWidget.setRowCount(row_count)
+        for i in range(column_count):
+            item = QtWidgets.QTableWidgetItem()
+            self.tableWidget.setHorizontalHeaderItem(i, item)
+            item.setText(_translate("MainWindow", column_value[i]))
+
+        # set row value
+        for i in range(row_count):
+            item = QtWidgets.QTableWidgetItem()
+            self.tableWidget.setVerticalHeaderItem(i, item)
+            item.setText(_translate("MainWindow", str(i + 1)))
+
+        # set item value
+        for i in range(row_count):
+            for j in range(column_count):
+                item = QtWidgets.QTableWidgetItem()
+                self.tableWidget.setItem(i, j, item)
+                item = self.tableWidget.item(i, j)
+                item.setText(_translate("MainWindow", str(result[i][j])))
+
+        self.label_22.setText(_translate("MainWindow", notify_text))
+
     def init_designer_no_combo_box(self):
         _translate = QtCore.QCoreApplication.translate
         # init designer_no combo_box2,5
@@ -93,8 +119,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pass
 
     def order_list_update(self):
-        _translate = QtCore.QCoreApplication.translate
-
         price_dic = {'洗髮': '400', '剪髮': '400', '洗髮+剪髮': '800', '染髮': '1200', '燙髮': '1600'}
         salon_no = self.comboBox_8.itemText(self.comboBox_8.currentIndex())
         salon_content = self.comboBox_3.itemText(self.comboBox_3.currentIndex())
@@ -109,37 +133,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         column_count = 5
         row_count = len(order_list_result)
-        self.tableWidget.setColumnCount(column_count)
-        self.tableWidget.setRowCount(row_count)
-        # set column value
         column_value = ['預約編號', '美髮項目', '美髮價錢', '預約者電話', '設計師編號']
-        for i in range(column_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setHorizontalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", column_value[i]))
-
-        # set row value
-        for i in range(row_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setVerticalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", str(i + 1)))
-
-        # set item value
-        for i in range(row_count):
-            for j in range(column_count):
-                item = QtWidgets.QTableWidgetItem()
-                self.tableWidget.setItem(i, j, item)
-                item = self.tableWidget.item(i, j)
-                item.setText(_translate("MainWindow", str(order_list_result[i][j])))
-
-        self.label_22.setText(_translate("MainWindow", '編號 ' + salon_no + " 已更新"))
+        self.show_database_status(order_list_result, column_count,
+                                  row_count, column_value, '編號 ' + salon_no + " 已更新")
 
     def order_list_delete(self):
-        _translate = QtCore.QCoreApplication.translate
-
         salon_no = self.comboBox_7.itemText(self.comboBox_7.currentIndex())
         sql = 'delete from order_salon where salon_no = '+ salon_no
         cursor.execute(sql)
+        self.init_salon_no_combo_box()
         mb_db.commit()
 
         sql = 'select * from order_salon'
@@ -148,65 +150,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         column_count = 5
         row_count = len(order_list_result)
-        self.tableWidget.setColumnCount(column_count)
-        self.tableWidget.setRowCount(row_count)
-        # set column value
         column_value = ['預約編號', '美髮項目', '美髮價錢', '預約者電話', '設計師編號']
-        for i in range(column_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setHorizontalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", column_value[i]))
-
-        # set row value
-        for i in range(row_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setVerticalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", str(i + 1)))
-
-        # set item value
-        for i in range(row_count):
-            for j in range(column_count):
-                item = QtWidgets.QTableWidgetItem()
-                self.tableWidget.setItem(i, j, item)
-                item = self.tableWidget.item(i, j)
-                item.setText(_translate("MainWindow", str(order_list_result[i][j])))
-
-        self.label_22.setText(_translate("MainWindow", '編號 ' + salon_no + " 已刪除"))
-        self.init_salon_no_combo_box()
+        self.show_database_status(order_list_result, column_count,
+                                  row_count, column_value, '編號 ' + salon_no + " 已刪除")
 
     def show_order_list(self):
-        _translate = QtCore.QCoreApplication.translate
-
         sql = 'select * from order_salon'
         cursor.execute(sql)
         order_list_result = cursor.fetchall()
 
         column_count = 5
         row_count = len(order_list_result)
-        self.tableWidget.setColumnCount(column_count)
-        self.tableWidget.setRowCount(row_count)
-        # set column value
         column_value = ['預約編號', '美髮項目', '美髮價錢', '預約者電話', '設計師編號']
-        for i in range(column_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setHorizontalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", column_value[i]))
 
-        # set row value
-        for i in range(row_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setVerticalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", str(i + 1)))
-
-        # set item value
-        for i in range(row_count):
-            for j in range(column_count):
-                item = QtWidgets.QTableWidgetItem()
-                self.tableWidget.setItem(i, j, item)
-                item = self.tableWidget.item(i, j)
-                item.setText(_translate("MainWindow", str(order_list_result[i][j])))
-
-        self.label_22.setText(_translate("MainWindow", "顯示預約總表"))
+        self.show_database_status(order_list_result, column_count,
+                                  row_count, column_value, "顯示預約總表")
 
     def customer_order(self):
         _translate = QtCore.QCoreApplication.translate
@@ -222,7 +180,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
               ' values (%s, %s, %s, %s)'
         val = (salon_content, price_dic[salon_content], customer_phone, designer_no)
         cursor.execute(sql, val)
-        self.label_22.setText(_translate("MainWindow", "預約成功"))
         self.init_salon_no_combo_box()
         mb_db.commit()
 
@@ -232,32 +189,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         order_salon_result = cursor.fetchall()
         column_count = 5
         row_count = len(order_salon_result)
-        self.tableWidget.setColumnCount(column_count)
-        self.tableWidget.setRowCount(row_count)
-        # set column value
         column_value = ['預約編號', '美髮項目', '美髮價錢', '預約者手機', '設計師編號']
-        for i in range(column_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setHorizontalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", column_value[i]))
 
-        # set row value
-        for i in range(row_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setVerticalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", str(i + 1)))
-
-        # set item value
-        for i in range(row_count):
-            for j in range(column_count):
-                item = QtWidgets.QTableWidgetItem()
-                self.tableWidget.setItem(i, j, item)
-                item = self.tableWidget.item(i, j)
-                item.setText(_translate("MainWindow", str(order_salon_result[i][j])))
+        self.show_database_status(order_salon_result, column_count, row_count, column_value, "預約成功")
 
     def customer_order_list(self):
-        _translate = QtCore.QCoreApplication.translate
-
         customer_phone = self.comboBox_4.itemText(self.comboBox_4.currentIndex())
         sql = 'select salon_no, designer_no, salon_content from order_salon ' \
               'where customer_phone = ' + customer_phone
@@ -266,33 +202,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         column_count = 3
         row_count = len(customer_order_list_result)
-        self.tableWidget.setColumnCount(column_count)
-        self.tableWidget.setRowCount(row_count)
-        # set column value
         column_value = ['預約編號', '設計師編號', '美髮項目']
-        for i in range(column_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setHorizontalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", column_value[i]))
-
-        # set row value
-        for i in range(row_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setVerticalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", str(i + 1)))
-
-        # set item value
-        for i in range(row_count):
-            for j in range(column_count):
-                item = QtWidgets.QTableWidgetItem()
-                self.tableWidget.setItem(i, j, item)
-                item = self.tableWidget.item(i, j)
-                item.setText(_translate("MainWindow", str(customer_order_list_result[i][j])))
-
-        self.label_22.setText(_translate("MainWindow", '客人 ' + customer_phone + " 預約狀況"))
+        notify_text = '客人 ' + customer_phone + " 預約狀況"
+        self.show_database_status(customer_order_list_result, column_count,
+                                  row_count, column_value, notify_text)
 
     def designer_list(self):
-        _translate = QtCore.QCoreApplication.translate
 
         designer_no = self.comboBox_2.itemText(self.comboBox_2.currentIndex())
         sql = 'select salon_no, customer_phone, salon_content from order_salon ' \
@@ -302,30 +217,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         column_count = 3
         row_count = len(designer_list_result)
-        self.tableWidget.setColumnCount(column_count)
-        self.tableWidget.setRowCount(row_count)
-        # set column value
         column_value = ['預約編號', '預約者手機', '美髮項目']
-        for i in range(column_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setHorizontalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", column_value[i]))
-
-        # set row value
-        for i in range(row_count):
-            item = QtWidgets.QTableWidgetItem()
-            self.tableWidget.setVerticalHeaderItem(i, item)
-            item.setText(_translate("MainWindow", str(i + 1)))
-
-        # set item value
-        for i in range(row_count):
-            for j in range(column_count):
-                item = QtWidgets.QTableWidgetItem()
-                self.tableWidget.setItem(i, j, item)
-                item = self.tableWidget.item(i, j)
-                item.setText(_translate("MainWindow", str(designer_list_result[i][j])))
-
-        self.label_22.setText(_translate("MainWindow", '設計師 ' + designer_no + "號 預約列表"))
+        notify_text = '設計師 ' + designer_no + "號 預約列表"
+        self.show_database_status(designer_list_result, column_count,
+                                  row_count, column_value, notify_text)
 
     def sql_clear(self):
         _translate = QtCore.QCoreApplication.translate
