@@ -107,16 +107,50 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.comboBox_8.setItemText(i, _translate("MainWindow", str(salon_no[i][0])))
 
     def inventory_shortage_item(self):
-        pass
+        sql = "select * from item where item_num < 10 order by item_num"
+        cursor.execute(sql)
+        inventory_shortage_item_result = cursor.fetchall()
+
+        column_count = 4
+        row_count = len(inventory_shortage_item_result)
+        column_value = ['耗材編號', '耗材名稱', '耗材數量', '耗材管理人']
+        self.show_database_status(inventory_shortage_item_result, column_count,
+                                  row_count, column_value, '數量小於10的耗材')
 
     def each_office_manager(self):
-        pass
+        sql = "select office_address, manager_no from office"
+        cursor.execute(sql)
+        each_office_manager_result = cursor.fetchall()
+
+        column_count = 2
+        row_count = len(each_office_manager_result)
+        column_value = ['分店名稱', '管理人編號']
+        self.show_database_status(each_office_manager_result, column_count,
+                                  row_count, column_value, '各分店管理人編號')
 
     def each_office_member_num(self):
-        pass
+        sql = "select office_addr,count(*) from designer " \
+              "group by office_addr order by count(*) desc"
+        cursor.execute(sql)
+        each_office_member_num_result = cursor.fetchall()
+
+        column_count = 2
+        row_count = len(each_office_member_num_result)
+        column_value = ['分店名稱', '人員']
+        self.show_database_status(each_office_member_num_result, column_count,
+                                  row_count, column_value, '各分店設計師人數')
 
     def head_office_order(self):
-        pass
+        sql = "select * from order_salon where designer_no in " \
+              "(select designer_no from designer where office_addr = 'Happy Street No.1')"
+        cursor.execute(sql)
+        head_office_order_result = cursor.fetchall()
+
+        column_count = 5
+        row_count = len(head_office_order_result)
+        column_value = ['預約編號', '美髮項目', '美髮價錢', '預約者電話', '設計師編號']
+        self.show_database_status(head_office_order_result, column_count,
+                                  row_count, column_value, '總店預約狀況')
 
     def order_list_update(self):
         price_dic = {'洗髮': '400', '剪髮': '400', '洗髮+剪髮': '800', '染髮': '1200', '燙髮': '1600'}
@@ -305,7 +339,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             column_value = []
                             for k, v in table_dic[table].items():
                                 column_value.append(v)
-                            print(column_value)
                             for i in range(column_count):
                                 item = QtWidgets.QTableWidgetItem()
                                 self.tableWidget.setHorizontalHeaderItem(i, item)
