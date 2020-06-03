@@ -2,7 +2,7 @@
 ###### tags: `CSIE課程`
 
 ## 應用場景 
-### ==髮廊管理系統💇🏻‍♀️==
+### 髮廊管理系統💇🏻‍♀️
 
 ## 文件說明
 
@@ -75,31 +75,31 @@
 - 該區塊主要用來執行一些特別功能
 - ![](https://i.imgur.com/0GT1TCk.png)
 - 總店預約狀況按鈕
-    - 顯示在總店工作的設計師預約狀況
+    - 顯示總店的預約人數、平均花費、最小花費、最大花費、花費總金額
     ```mysql
-    sql = select * from order_salon 
-    where designer_no in 
-    (select designer_no from designer 
-    where office_addr = 'Happy Street No.1')
+    sql = select count(*),avg(salon_price),min(salon_price),max(salon_price),sum(salon_price) 
+    from order_salon where designer_no 
+    in (select designer_no from designer where office_addr = 'Happy Street No.1')
     ```
-- 各門市設計師人數
+- 其他門市預約狀況
+    - 顯示分店的預約人數、平均花費、最小花費、最大花費、花費總金額
+    ```mysql
+    sql = select office_addr, count(*),avg(salon_price),min(salon_price),max(salon_price),sum(salon_price)
+          from order_salon ,designer where order_salon.designer_no = designer.designer_no and order_salon.designer_no 
+          not in (select designer_no from designer where office_addr = 'Happy Street No.1') group by office_addr
+    ```
+- 非管理員設計師
     - 如文字所述
     ```mysql
-    sql = "select office_addr,count(*) 
-    from designer group by office_addr order by count(*) desc
-    ```
-- 各門市管理人編號
-    - 如文字所述
-    ```mysql
-    sql = select office_address, manager_no from office
+    sql = select * from designer a where not exists (select manager_no from office where a.designer_no = manager_no)
     ```
 - 庫存不足的耗材
     - 顯示庫存數量小於10的耗材名稱
     ```mysql
-    sql = select * from item where item_num < 10 order by item_num
+    sql = select * from item  group by item_no having item_num < 10 order by item_num
     ```
 ### 區塊3 : sql語法結果顯示區
-- ==Feature==:
+- Feature:
     - 欄位會隨 SELECT 所選的attribute 順序做更動
     - 欄位會根據 SELECT 所選的attribute 轉換成中文欄位
 
@@ -111,13 +111,13 @@
     1. 顧客：
         - 透過「預約」動作來預約美髮。
     2. 設計師：
-        - 與預約美髮總表的關係為「服務」，藉由美髮總表來服務客人，透過++就職門市地址++當作==FK==得知每間門市的設計師人員。
+        - 與預約美髮總表的關係為「服務」，藉由美髮總表來服務客人，透過就職門市地址當作FK得知每間門市的設計師人員。
     3. 預約美髮總表
-        - 透過++預約者電話++與++設計師編號++當作==FK==來得知目前的預約狀況。
+        - 透過預約者電話與設計師編號當作FK來得知目前的預約狀況。
     4. 門市：
-        - 透過++設計師編號++當作==FK==用來得知管理該門市是哪位設計師。
+        - 透過++設計師編號當作FK用來得知管理該門市是哪位設計師。
     6. 耗材
-        - 紀錄耗材的數量以便補貨，同時透過++設計師編號++當作==FK==用來得知管理該耗材是哪位設計師。
+        - 紀錄耗材的數量以便補貨，同時透過設計師編號當作FK用來得知管理該耗材是哪位設計師。
 
 
 
