@@ -129,14 +129,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                   row_count, column_value, '非管理員設計師')
 
     def other_office_order(self):
-        sql = "select count(*),avg(salon_price),min(salon_price),max(salon_price),sum(salon_price) from order_salon where designer_no not in " \
-              "(select designer_no from designer where office_addr = 'Happy Street No.1')"
+        sql = "select office_addr, count(*),avg(salon_price),min(salon_price),max(salon_price),sum(salon_price)"\
+              " from order_salon ,designer where order_salon.designer_no = designer.designer_no and order_salon.designer_no not in " \
+              "(select designer_no from designer where office_addr = 'Happy Street No.1') group by office_addr"
         cursor.execute(sql)
         head_office_order_result = cursor.fetchall()
 
-        column_count = 5
+        column_count = 6
         row_count = len(head_office_order_result)
-        column_value = ['預約人數','客人平均花費','客人花費最低','客人花費最高','總收入']
+        column_value = ['門市名稱','預約人數','客人平均花費','客人花費最低','客人花費最高','總收入']
         self.show_database_status(head_office_order_result, column_count,
                                   row_count, column_value, '其他門市預約狀況')
     def head_office_order(self):
