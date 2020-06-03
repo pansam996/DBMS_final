@@ -238,8 +238,8 @@ class Ui_MainWindow(object):
         self.pushButton_25.setText(_translate("MainWindow", "更新"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "管理預約總表"))
         self.pushButton_13.setText(_translate("MainWindow", "總店預約狀況"))
-        self.pushButton_11.setText(_translate("MainWindow", "各門市設計師人數"))
-        self.pushButton_12.setText(_translate("MainWindow", "各門市管理人編號"))
+        self.pushButton_11.setText(_translate("MainWindow", "其他門市預約狀況"))
+        self.pushButton_12.setText(_translate("MainWindow", "非管理員設計師"))
         self.pushButton_9.setText(_translate("MainWindow", "庫存不足的耗材"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "進階功能"))
 

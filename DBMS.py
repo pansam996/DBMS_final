@@ -34,8 +34,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_7.clicked.connect(self.customer_order)
         self.pushButton_25.clicked.connect(self.order_list_update)
         self.pushButton_13.clicked.connect(self.head_office_order)
-        self.pushButton_11.clicked.connect(self.each_office_member_num)
-        self.pushButton_12.clicked.connect(self.each_office_manager)
+        self.pushButton_11.clicked.connect(self.other_office_order)
+        self.pushButton_12.clicked.connect(self.not_office_manager)
         self.pushButton_9.clicked.connect(self.inventory_shortage_item)
 
     def show_database_status(self, result, column_count, row_count, column_value, notify_text):
@@ -107,7 +107,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.comboBox_8.setItemText(i, _translate("MainWindow", str(salon_no[i][0])))
 
     def inventory_shortage_item(self):
-        sql = "select * from item where item_num < 10 order by item_num"
+        sql = "select * from item  group by item_no having item_num < 10 order by item_num"
         cursor.execute(sql)
         inventory_shortage_item_result = cursor.fetchall()
 
@@ -117,38 +117,37 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.show_database_status(inventory_shortage_item_result, column_count,
                                   row_count, column_value, '數量小於10的耗材')
 
-    def each_office_manager(self):
-        sql = "select office_address, manager_no from office"
+    def not_office_manager(self):
+        sql = "select * from designer a where not exists (select manager_no from office where a.designer_no = manager_no)"
         cursor.execute(sql)
         each_office_manager_result = cursor.fetchall()
 
         column_count = 2
         row_count = len(each_office_manager_result)
-        column_value = ['分店名稱', '管理人編號']
+        column_value = ['設計師編號', '設計師姓名']
         self.show_database_status(each_office_manager_result, column_count,
-                                  row_count, column_value, '各分店管理人編號')
+                                  row_count, column_value, '非管理員設計師')
 
-    def each_office_member_num(self):
-        sql = "select office_addr,count(*) from designer " \
-              "group by office_addr order by count(*) desc"
-        cursor.execute(sql)
-        each_office_member_num_result = cursor.fetchall()
-
-        column_count = 2
-        row_count = len(each_office_member_num_result)
-        column_value = ['分店名稱', '人員']
-        self.show_database_status(each_office_member_num_result, column_count,
-                                  row_count, column_value, '各分店設計師人數')
-
-    def head_office_order(self):
-        sql = "select * from order_salon where designer_no in " \
+    def other_office_order(self):
+        sql = "select count(*),avg(salon_price),min(salon_price),max(salon_price),sum(salon_price) from order_salon where designer_no not in " \
               "(select designer_no from designer where office_addr = 'Happy Street No.1')"
         cursor.execute(sql)
         head_office_order_result = cursor.fetchall()
 
         column_count = 5
         row_count = len(head_office_order_result)
-        column_value = ['預約編號', '美髮項目', '美髮價錢', '預約者電話', '設計師編號']
+        column_value = ['預約人數','客人平均花費','客人花費最低','客人花費最高','總收入']
+        self.show_database_status(head_office_order_result, column_count,
+                                  row_count, column_value, '其他門市預約狀況')
+    def head_office_order(self):
+        sql = "select count(*),avg(salon_price),min(salon_price),max(salon_price),sum(salon_price) from order_salon where designer_no in " \
+              "(select designer_no from designer where office_addr = 'Happy Street No.1')"
+        cursor.execute(sql)
+        head_office_order_result = cursor.fetchall()
+
+        column_count = 5
+        row_count = len(head_office_order_result)
+        column_value = ['預約人數','客人平均花費','客人花費最低','客人花費最高','總收入']
         self.show_database_status(head_office_order_result, column_count,
                                   row_count, column_value, '總店預約狀況')
 
@@ -245,7 +244,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         designer_no = self.comboBox_2.itemText(self.comboBox_2.currentIndex())
         sql = 'select salon_no, customer_phone, salon_content from order_salon ' \
-              'where designer_no = ' + designer_no
+              'where exists (select * from order_salon where designer_no = ' + designer_no + ');'
         cursor.execute(sql)
         designer_list_result = cursor.fetchall()
 
@@ -290,7 +289,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         delete from T
         insert into T
         alter table T
-        
+
         without refresh table
         drop table <- 刪除成功即可
         create table T <- 創造成功即可
