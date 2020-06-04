@@ -10,6 +10,10 @@
 - `Database Language`: **mysql**
 - `GUI Implement`: **Qt Designer**
 
+## 執行方式
+
+- `$ pip install -r requirements.txt`
+- `$ python3 DBMS.py`
 ## 介面
 - 整體介面截圖 ：
     - ![](https://i.imgur.com/sPzBbTJ.png)
