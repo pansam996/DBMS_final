@@ -77,7 +77,7 @@
 
 #### 進階功能
 - 該區塊主要用來執行一些特別功能
-- ![](https://i.imgur.com/0GT1TCk.png)
+- ![](https://i.imgur.com/N9aomAw.png)
 - 總店預約狀況按鈕
     - 顯示總店的預約人數、平均花費、最小花費、最大花費、花費總金額
     ```mysql
