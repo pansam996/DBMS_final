@@ -31,8 +31,8 @@
     - 查詢設計師目前預約狀況
     
     ```mysql
-    sql = select salon_no, customer_phone, salon_content 
-        from order_salon where designer_no = select_designer_no
+    sql = select salon_no, customer_phone, salon_content from order_salon 
+          where exists (select * from order_salon where designer_no = select_designer_no);
     ```
 - 預約狀況按鈕
     - 查詢客人目前預約狀況
