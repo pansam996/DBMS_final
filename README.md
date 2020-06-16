@@ -1,7 +1,7 @@
 # 資料庫期末專題文件
 ###### tags: `CSIE課程`
 
-## 應用場景 
+## 應用場景
 ### 髮廊管理系統💇🏻‍♀️
 
 ## 文件說明
@@ -11,16 +11,19 @@
 - `GUI Implement`: **Qt Designer**
 
 ## 執行方式
-
-- `$ pip install -r requirements.txt`
-- `$ python3 DBMS.py`
+- 匯入database:
+    - `$ mysql -u account -p database_name < mb_hair.sql`
+- 修改DBMS.py 內 connect MySQL 為自己設定的 user 與 password
+- 執行程式
+    - `$ pip install -r requirements.txt`
+    - `$ python3 DBMS.py`
 ## 介面
 - 整體介面截圖 ：
     - ![](https://i.imgur.com/sPzBbTJ.png)
 ## 功能說明區塊說明
 ### 區塊1 : SQL語法輸入
 - 可執行動作
-    - SELECT 
+    - SELECT
     - UPDATE
     - DELETE
     - INSERT
@@ -33,23 +36,23 @@
 - ![](https://i.imgur.com/kpe0C6l.png)
 - 預約列表按鈕
     - 查詢設計師目前預約狀況
-    
+
     ```mysql
-    sql = select salon_no, customer_phone, salon_content from order_salon 
+    sql = select salon_no, customer_phone, salon_content from order_salon
           where exists (select * from order_salon where designer_no = select_designer_no);
     ```
 - 預約狀況按鈕
     - 查詢客人目前預約狀況
     ```mysql
-    sql = select salon_no, designer_no, salon_content 
-        from order_salon 
+    sql = select salon_no, designer_no, salon_content
+        from order_salon
         where customer_phone = select_customer_phone
     ```
 - 預約美髮
     - 根據選擇的設計師、選擇的美髮項目、客人電話來預約美髮
     ```mysql
-    sql = insert into order_salon 
-        (salon_content, salon_price, customer_phone, designer_no) 
+    sql = insert into order_salon
+        (salon_content, salon_price, customer_phone, designer_no)
         values (%s, %s, %s, %s)
     ```
 
@@ -70,8 +73,8 @@
 - 更新按鈕
     - 更新指定的預約編號的美髮項目
     ```mysql
-    sql = update order_salon set salon_content = salon_content , 
-        salon_price = price_dic[salon_content] 
+    sql = update order_salon set salon_content = salon_content ,
+        salon_price = price_dic[salon_content]
         where salon_no = select_salon_no
     ```
 
@@ -81,15 +84,15 @@
 - 總店預約狀況按鈕
     - 顯示總店的預約人數、平均花費、最小花費、最大花費、花費總金額
     ```mysql
-    sql = select count(*),avg(salon_price),min(salon_price),max(salon_price),sum(salon_price) 
-    from order_salon where designer_no 
+    sql = select count(*),avg(salon_price),min(salon_price),max(salon_price),sum(salon_price)
+    from order_salon where designer_no
     in (select designer_no from designer where office_addr = 'Happy Street No.1')
     ```
 - 其他門市預約狀況
     - 顯示分店的預約人數、平均花費、最小花費、最大花費、花費總金額
     ```mysql
     sql = select office_addr, count(*),avg(salon_price),min(salon_price),max(salon_price),sum(salon_price)
-          from order_salon ,designer where order_salon.designer_no = designer.designer_no and order_salon.designer_no 
+          from order_salon ,designer where order_salon.designer_no = designer.designer_no and order_salon.designer_no
           not in (select designer_no from designer where office_addr = 'Happy Street No.1') group by office_addr
     ```
 - 非管理員設計師
