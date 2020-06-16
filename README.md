@@ -13,7 +13,7 @@
 ## 執行方式
 - 匯入database:
     - `$ mysql -u account -p database_name < mb_hair.sql`
-- 修改DBMS.py 內 connect MySQL 為自己設定的 user 與 password
+- 修改DBMS.py 內 connect MySQL 為自己設定的 user 與 password
 - 執行程式
     - `$ pip install -r requirements.txt`
     - `$ python3 DBMS.py`
